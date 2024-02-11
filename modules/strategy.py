@@ -8,8 +8,8 @@ def price_behaviour(data):
 def group4_ensemble_model_signals(df, return_stability=False):
 
     hurst_exp = price_behaviour(df.close)
-    volatility = (df.close[:14].mean() - df.close[:14].min()) / (df.close[:14].max() - df.close[:14].min())
-    stability = 1 - volatility
+    cv = df.close[:14].std() / df.close[:14].mean()
+    stability = 1 - cv
 
     if hurst_exp > 0.5:
         print(f"{df.index[0]} -- {df.index[-1]} -- Price behaviour is Trend Following")
