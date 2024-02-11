@@ -5,9 +5,11 @@ from modules.indicators.bollinger import bollinger_bands
 def price_behaviour(data):
     return compute_Hc(data, kind='price')[0] 
 
-def group4_ensemble_model_signals(df):
+def group4_ensemble_model_signals(df, return_stability=False):
 
     hurst_exp = price_behaviour(df.close)
+    volatility = (df.close[:14].mean() - df.close[:14].min()) / (df.close[:14].max() - df.close[:14].min())
+    stability = 1 - volatility
 
     if hurst_exp > 0.5:
         print(f"{df.index[0]} -- {df.index[-1]} -- Price behaviour is Trend Following")
@@ -26,5 +28,9 @@ def group4_ensemble_model_signals(df):
     else:
         signal = 0
 
-    return signal
+    
+    if(return_stability):
+        return signal, stability
+    else:
+        return signal
 
